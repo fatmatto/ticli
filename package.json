@@ -1,0 +1,19 @@
+{
+  "name": "command-line-tool",
+  "version": "1.0.0",
+  "description": "Very tiny, zero dependencies, module to parse CLI arguments. Supports params and flags. Oh and can also prints the help for you.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "node node_modules/eslint/bin/eslint.js index.js examples --fix"
+  },
+  "author": "Mattia Alfieri <cikkense@gmail.com> (https://github.com/fatmatto)",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}

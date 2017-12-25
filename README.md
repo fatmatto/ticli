@@ -1,0 +1,34 @@
+# Ticli (TIny CLI)
+Zero dependencies, very tiny, command line argument parser.
+
+## Installation
+
+TODO
+
+## Basic usage
+
+```javascript
+const Cli = require('../index')
+
+let c = new Cli()
+
+c.registerFlag('help')
+  .alias('-h')
+  .alias('--help')
+  .describe('Print help')
+
+c.registerParam('thing')
+  .alias('-t')
+  .alias('--thing')
+  .describe('The parameter you need to do your thing')
+
+c.parse()
+
+if (c.getFlag('help') === true) {
+  console.log('Printing help and exiting\n')
+  c.printHelp()
+  process.exit(0)
+}
+
+console.log('Parsed params', c.get())
+```
