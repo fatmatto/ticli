@@ -1,5 +1,5 @@
 # Ticli (TIny CLI)
-Zero dependencies, very tiny, command line argument parser.
+Zero dependencies, very tiny, nodejs command line argument parser.
 
 ## Installation
 
