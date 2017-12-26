@@ -73,8 +73,9 @@ class Cli {
       secondColumn.push(param.description)
     })
 
+
     // Now we look for the longest element in first column
-    let maxLength = firstColumn.sort(function (a, b) { return b.length - a.length })[0].length
+    let maxLength = firstColumn.slice(0).sort(function (a, b) { return b.length - a.length })[0].length
 
     
 
