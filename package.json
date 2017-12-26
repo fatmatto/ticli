@@ -1,5 +1,5 @@
 {
-  "name": "ticli",
+  "name": "@fatmatto/ticli",
   "version": "1.0.0",
   "description": "Very tiny, zero dependencies, module to parse CLI arguments. Supports params and flags. Oh and can also prints the help for you.",
   "main": "index.js",

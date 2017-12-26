@@ -1,6 +1,19 @@
 'use strict'
 
 /**
+ * 
+ * @param {Number} n How many spaces to add to the padding string
+ * @returns {String} padding Returns the padding string 
+ */
+function getPadding(n) {
+  let b = '  '
+  for (var i = 0; i < n; i++) {
+    b += ' '
+  }
+  return b
+}
+
+/**
  * @class Option
  */
 class Option {
@@ -44,13 +57,28 @@ class Cli {
    * Outputs the help to the stdout
    */
   printHelp () {
-    console.log('\n\t Usage:\n')
+    console.log('\n\tUsage:\n')
+    let firstColumn = []
+    let secondColumn = []
     this.flags.forEach(flag => {
-      console.log('\t' + [flag.name].concat(flag.aliases).join(', ') + '\t ' + flag.description)
+      firstColumn.push([flag.name].concat(flag.aliases).join(', '))
+      secondColumn.push(flag.description)
     })
     this.params.forEach(param => {
-      console.log('\t' + [param.name].concat(param.aliases).join(', ') + '\t ' + param.description)
+      firstColumn.push([param.name].concat(param.aliases).join(', '))
+      secondColumn.push(param.description)
     })
+
+    // Now we look for the longest element in first column
+    let maxLength = firstColumn.sort(function (a, b) { return b.length - a.length })[0].length
+
+    
+
+    for (var i = 0; i < firstColumn.length; i++) {
+      let padding = getPadding(maxLength - firstColumn[i].length)
+      console.log('\t' + firstColumn[i] + padding + secondColumn[i])
+    }
+    
   }
 
   /**
