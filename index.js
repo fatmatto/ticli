@@ -48,7 +48,8 @@ class Option {
  * @class Cli
  */
 class Cli {
-  constructor () {
+  constructor (title) {
+    this.title = title || ""
     this.flags = []
     this.params = []
   }
@@ -57,6 +58,9 @@ class Cli {
    * Outputs the help to the stdout
    */
   printHelp () {
+    if (this.title) {
+      console.log('\n '+this.title+'\n')
+    }
     console.log('\n\tUsage:\n')
     let firstColumn = []
     let secondColumn = []
@@ -78,7 +82,7 @@ class Cli {
       let padding = getPadding(maxLength - firstColumn[i].length)
       console.log('\t' + firstColumn[i] + padding + secondColumn[i])
     }
-    
+
   }
 
   /**
