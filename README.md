@@ -3,7 +3,9 @@ Zero dependencies, very tiny, nodejs command line argument parser.
 
 ## Installation
 
-TODO
+```bash
+npm i @fatmatto/ticli
+```
 
 ## Basic usage
 
