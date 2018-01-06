@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fatmatto/ticli.svg?branch=master)](https://travis-ci.org/fatmatto/ticli)
+
 # Ticli (TIny CLI)
 Zero dependencies, very tiny, nodejs command line argument parser.
 
