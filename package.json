@@ -4,7 +4,7 @@
   "description": "Very tiny, zero dependencies, module to parse CLI arguments. Supports params and flags. Oh and can also prints the help for you.",
   "main": "index.js",
   "scripts": {
-    "test" : "mocha test",
+    "test": "mocha test",
     "lint": "node node_modules/eslint/bin/eslint.js index.js test examples --fix"
   },
   "author": "Mattia Alfieri <cikkense@gmail.com> (https://github.com/fatmatto)",
@@ -16,6 +16,7 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^4.1.0",
     "should": "^13.2.0"
   }
 }
