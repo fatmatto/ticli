@@ -13,7 +13,7 @@
  */
 const Cli = require('../index')
 
-let c = new Cli("Basic Example v0.1")
+let c = new Cli('Basic Example v0.1')
 
 c.registerFlag('help')
   .alias('-h')
