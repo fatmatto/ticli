@@ -19,7 +19,7 @@ function getPadding (n) {
 class Option {
   constructor (name, value) {
     this.name = name
-    this.value = value || null
+    this.value = value
 
     this.description = 'A useful parameter or flag'
     this.aliases = []
@@ -84,9 +84,16 @@ class Cli {
 
   /**
    * parses process.argv and populates flags and params
+   * @param {Array} args Optional array of cli arguments. Defaults to process.argv
    */
-  parse () {
-    process.argv.forEach((arg, index) => {
+  parse (args) {
+    
+    args = args || process.argv
+    
+    if (!Array.isArray(args)) { throw new Error('args must be an array of strings') }
+
+
+    args.forEach((arg, index) => {
       this.flags.forEach(flag => {
         if (flag.name === arg || flag.aliases.indexOf(arg) > -1) {
           flag.value = true
@@ -96,7 +103,7 @@ class Cli {
       this.params.forEach(param => {
         if (param.name === arg || param.aliases.indexOf(arg) > -1) {
           let valueIndex = index + 1
-          param.value = process.argv[valueIndex]
+          param.value = args[valueIndex]
         }
       })
     })
@@ -164,7 +171,7 @@ class Cli {
       return flag.name === flagName
     })
 
-    if (flag.length > 0) { return flag[0].value } else { return null }
+    if (flag.length > 0) { return flag[0].value } else { return false }
   }
 }
 
