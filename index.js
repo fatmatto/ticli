@@ -1,5 +1,6 @@
 'use strict'
 
+const path = require('path')
 /**
  *
  * @param {Number} n How many spaces to add to the padding string
@@ -96,9 +97,41 @@ class Cli {
     if (this.title) {
       console.log('\n ' + this.title + '\n')
     }
-    console.log('\n\tUsage:\n')
+
+    let firstHelpRow = `\n\tUsage: node ${path.basename(process.argv[1])}`
+
+    // //firstHelpRow += '\n\t'
+    // this.params.forEach(param => {
+    //   firstHelpRow += ` [${param.name} ${param.aliases.join(' ')} <value>] `
+    // })
+    // //firstHelpRow += '\n\t'
+    // this.flags.forEach(flag => {
+    //   firstHelpRow += ` [${flag.name} ${flag.aliases.join(' ')}] `
+    // })
+    // firstHelpRow += '\n'
+
+    if (this.commands.length > 0) { firstHelpRow += ' <command> \n\n\tWhere <command> is one of:' }
+    console.log(firstHelpRow)
+    let firstColumnCommands = []
+    let secondColumnCommands = []
+
+    this.commands.forEach(command => {
+      firstColumnCommands.push([command.name].concat(command.aliases).join(', '))
+      secondColumnCommands.push(command.description)
+    })
+    // Now we look for the longest element in first column
+    if (firstColumnCommands.length > 0) {
+      let maxLengthCommands = firstColumnCommands.slice(0).sort(function (a, b) { return b.length - a.length })[0].length
+
+      for (var i = 0; i < firstColumnCommands.length; i++) {
+        let padding = getPadding(maxLengthCommands - firstColumnCommands[i].length)
+        console.log('\t' + firstColumnCommands[i] + padding + secondColumnCommands[i])
+      }
+    }
+
     let firstColumn = []
     let secondColumn = []
+
     this.flags.forEach(flag => {
       firstColumn.push([flag.name].concat(flag.aliases).join(', '))
       secondColumn.push(flag.description)
@@ -108,12 +141,15 @@ class Cli {
       secondColumn.push(param.description)
     })
 
+    if (firstColumn.length === 0) { return }
+
+    console.log('\n\tParameters and flags:\n')
     // Now we look for the longest element in first column
     let maxLength = firstColumn.slice(0).sort(function (a, b) { return b.length - a.length })[0].length
 
-    for (var i = 0; i < firstColumn.length; i++) {
-      let padding = getPadding(maxLength - firstColumn[i].length)
-      console.log('\t' + firstColumn[i] + padding + secondColumn[i])
+    for (var j = 0; j < firstColumn.length; j++) {
+      let padding = getPadding(maxLength - firstColumn[j].length)
+      console.log('\t' + firstColumn[j] + padding + secondColumn[j])
     }
   }
 

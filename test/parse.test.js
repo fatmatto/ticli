@@ -63,7 +63,6 @@ describe('#parse()', () => {
     wrongFn.called.should.equal(false)
   })
 
-
   it('Should call the default program when no command is specified', () => {
     let program = new Program('Ticli Command->Run Test')
 
@@ -75,6 +74,5 @@ describe('#parse()', () => {
     program.run()
 
     fn.called.should.equal(true)
-
   })
 })
