@@ -1,6 +1,6 @@
 {
   "name": "@fatmatto/ticli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Very tiny, zero dependencies, module to parse CLI arguments. Supports commands, params and flags. Oh and can also print the help for you.",
   "main": "index.js",
   "scripts": {
