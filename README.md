@@ -14,25 +14,25 @@ npm i @fatmatto/ticli
 ```javascript
 const Cli = require('../index')
 
-let c = new Cli()
+let program = new Cli()
 
-c.registerFlag('help')
+program.registerFlag('help')
   .alias('-h')
   .alias('--help')
   .describe('Print help')
 
-c.registerParam('thing')
+program.registerParam('thing')
   .alias('-t')
   .alias('--thing')
   .describe('The parameter you need to do your thing')
 
-c.parse()
+program.registerCommand('help', (program) => { program.printHelp()})
+program.registerCommand('echoParams', (program) => { console.log( program.get() ) })
 
-if (c.getFlag('help') === true) {
-  console.log('Printing help and exiting\n')
-  c.printHelp()
-  process.exit(0)
-}
+// Optional if run() is called
+program.parse()
 
-console.log('Parsed params', c.get())
+program.run()
+
+
 ```

@@ -3,7 +3,7 @@
 /**
  * Try runnning this example as
  *
- * node examples/basic.js -u http://google.com -m GET
+ * node examples/basic.js  printParams --url www.google.it --method POST
  *
  * or
  *
@@ -13,29 +13,26 @@
  */
 const Cli = require('../index')
 
-let c = new Cli('Basic Example v0.1')
+let program = new Cli('Basic Example v0.1')
 
-c.registerFlag('help')
-  .alias('-h')
-  .alias('--help')
-  .describe('Print help')
+program
+  .registerCommand('help', (program) => {
+    program.printHelp()
+  })
+  .setDefault()
 
-c.registerParam('url')
-  .alias('-u')
-  .alias('--url')
-  .describe('The HTTP url to call')
+program
+  .registerCommand('printParams', (program) => {
+    console.log('Parsed params', program.get())
+  })
 
-c.registerParam('method')
-  .alias('-m')
-  .alias('--method')
-  .describe('The HTTP method to use')
+program
+  .registerParam('myParam')
+  .alias('-p')
+  .alias('--param')
+  .describe('My parameter')
 
-c.parse()
+// The parse step is mandatory as it collects parameters from the prcocess.argv array
+program.parse()
 
-if (c.getFlag('help') === true) {
-  console.log('Printing help and exiting\n')
-  c.printHelp()
-  process.exit(0)
-}
-
-console.log('Parsed params', c.get())
+program.run()

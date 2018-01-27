@@ -13,6 +13,38 @@ function getPadding (n) {
   return b
 }
 
+class Command {
+  constructor (name, callback) {
+    this.name = name
+    this.callback = callback
+
+    this.description = 'A useful command'
+    this.aliases = []
+  }
+
+  /**
+   *
+   * @param {String} aliasName Assign an alias to the option, like "--help" and "-h" for the "help" option
+   */
+  alias (aliasName) {
+    this.aliases.push(aliasName)
+    return this
+  }
+
+  /**
+   *
+   * @param {String} desc The Param or Flag description, useful for printing the help
+   */
+  describe (desc) {
+    this.description = desc
+    return this
+  }
+
+  setDefault () {
+    this.isDefault = true
+  }
+}
+
 /**
  * @class Option
  */
@@ -52,6 +84,9 @@ class Cli {
     this.title = title || ''
     this.flags = []
     this.params = []
+    this.commands = []
+
+    this.parseWasCalled = false
   }
 
   /**
@@ -87,11 +122,9 @@ class Cli {
    * @param {Array} args Optional array of cli arguments. Defaults to process.argv
    */
   parse (args) {
-    
     args = args || process.argv
-    
-    if (!Array.isArray(args)) { throw new Error('args must be an array of strings') }
 
+    if (!Array.isArray(args)) { throw new Error('args must be an array of strings') }
 
     args.forEach((arg, index) => {
       this.flags.forEach(flag => {
@@ -106,7 +139,33 @@ class Cli {
           param.value = args[valueIndex]
         }
       })
+
+      this.commands.forEach(command => {
+        if (command.name === arg || command.aliases.indexOf(arg) > -1) {
+          command.hasBeenCalled = true
+        }
+      })
     })
+
+    this.parseWasCalled = true
+  }
+  /**
+   * Call this method to invoke commands matching command line arguments.
+   * If matching commands are found, their callback will be called.
+   * If parse() was not explicitly called before,
+   * this method will call parse() without arguments. See the parse method for more information.
+   */
+  run () {
+    if (this.parseWasCalled === false) { this.parse() }
+
+    let calledCommands = this.commands
+      .filter(command => command.hasBeenCalled)
+
+    // Still multiple defaults can be called
+    if (calledCommands.length === 0) { calledCommands = this.commands.filter(command => command.isDefault) }
+
+    calledCommands
+      .forEach(command => command.callback.call(this, this))
   }
 
   /**
@@ -131,6 +190,23 @@ class Cli {
     let newParam = new Option(paramName, defaultValue)
     this.params.push(newParam)
     return newParam
+  }
+
+  /**
+   * Registers a function to be executed when the script is launched with a specific commandName e.g. node script.js help
+   *
+   * @param  {[type]}   commandName [description]
+   * @param  {Function} callback    [description]
+   * @return {[type]}               [description]
+   */
+  registerCommand (commandName, callback) {
+    if (typeof callback !== 'function') { throw new Error('callback must be a function') }
+
+    if (typeof commandName !== 'string') { throw new Error('commandName must be a string') }
+
+    let newCommand = new Command(commandName, callback)
+    this.commands.push(newCommand)
+    return newCommand
   }
 
   /**

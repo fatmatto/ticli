@@ -1,4 +1,5 @@
 require('should')
+const sinon = require('sinon')
 
 let Program = require('../index')
 
@@ -44,5 +45,36 @@ describe('#parse()', () => {
 
     program.getFlag('https').should.equal(true)
     program.getFlag('json').should.equal(false)
+  })
+
+  it('Should call the correct program', () => {
+    let program = new Program('Ticli Command->Run Test')
+
+    let rightFn = sinon.spy()
+    let wrongFn = sinon.spy()
+
+    program.registerCommand('rightCommand', rightFn)
+    program.registerCommand('wrongCommand', wrongFn)
+
+    program.parse(['node', 'parse.test.js', 'rightCommand'])
+    program.run()
+
+    rightFn.called.should.equal(true)
+    wrongFn.called.should.equal(false)
+  })
+
+
+  it('Should call the default program when no command is specified', () => {
+    let program = new Program('Ticli Command->Run Test')
+
+    let fn = sinon.spy()
+
+    program.registerCommand('defaultCommand', fn).setDefault()
+
+    program.parse(['node', 'parse.test.js'])
+    program.run()
+
+    fn.called.should.equal(true)
+
   })
 })
